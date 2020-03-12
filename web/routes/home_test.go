@@ -3,6 +3,7 @@ package routes_test
 import (
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"bakku.org/sherlock/web/routes"
@@ -15,14 +16,14 @@ func TestGETHome_ShouldRenderSuccessfully(t *testing.T) {
 	}
 
 	rr := httptest.NewRecorder()
-	handler := routes.Home{}
+	handler := routes.Home{Template: getTemplate("home.html")}
 	handler.ServeHTTP(rr, req)
 
 	if rr.Code != http.StatusOK {
 		t.Fatal("expected error code to be 200")
 	}
 
-	if rr.Body.String() != "Hello, World" {
-		t.Fatal("expected body to contain 'Hello, World'")
+	if !strings.Contains(rr.Body.String(), "Home") {
+		t.Fatal("expected body to contain 'Home'")
 	}
 }

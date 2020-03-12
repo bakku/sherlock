@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"bakku.org/sherlock/web"
@@ -12,6 +13,12 @@ func main() {
 		port = "8080"
 	}
 
-	server := web.NewServer(port)
+	templateDir := os.Getenv("TEMPLATE_DIR")
+	if templateDir == "" {
+		log.Fatalln("error: TEMPLATE_DIR not given")
+		return
+	}
+
+	server := web.NewServer(port, templateDir)
 	server.Start()
 }
